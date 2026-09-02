@@ -137,21 +137,21 @@ export function VerifiedIcon({ className = "w-5 h-5" }: IconProps) {
   );
 }
 
-export function categoryIcon(name: string) {
+export function categoryIcon(name: string, className = "w-7 h-7") {
   switch (name) {
     case "compass":
-      return <CompassIcon className="w-7 h-7" />;
+      return <CompassIcon className={className} />;
     case "bed":
-      return <BedIcon className="w-7 h-7" />;
+      return <BedIcon className={className} />;
     case "car":
-      return <CarIcon className="w-7 h-7" />;
+      return <CarIcon className={className} />;
     case "surf":
-      return <SurfIcon className="w-7 h-7" />;
+      return <SurfIcon className={className} />;
     case "bike":
-      return <BikeIcon className="w-7 h-7" />;
+      return <BikeIcon className={className} />;
     case "star":
-      return <StarIcon className="w-7 h-7" />;
+      return <StarIcon className={className} />;
     default:
-      return <CompassIcon className="w-7 h-7" />;
+      return <CompassIcon className={className} />;
   }
 }

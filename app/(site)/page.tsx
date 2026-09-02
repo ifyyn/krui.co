@@ -117,22 +117,25 @@ function CategoriesSection({ categories, counts }: { categories: Category[]; cou
             </h2>
           </div>
         </div>
-        <div className="flex gap-3 lg:gap-5 overflow-x-auto scrollbar-hide -mx-[18px] lg:mx-0 px-[18px] lg:px-0 pb-2 snap-x snap-mandatory">
+        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-5">
           {categories.map((c) => {
             const count = counts(c.slug);
             return (
               <Link
                 key={c.slug}
                 href={`/paket?cat=${c.slug}`}
-                className="group relative shrink-0 w-[110px] lg:w-[180px] snap-start rounded-full overflow-hidden block"
+                className="group shrink-0"
               >
-                <CategoryImage slug={c.slug} className="aspect-square w-full" showIcon={false} showLabel={false} />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/15 to-transparent pointer-events-none" />
-                <div className="absolute inset-x-0 bottom-0 p-3 lg:p-4 text-center">
-                  <div className="text-white font-display font-700 text-[13px] lg:text-[16px] drop-shadow-sm">
-                    {c.label}
+                <div className="flex flex-col items-center gap-2.5 text-center">
+                  <div className="aspect-square w-full max-w-[112px] lg:max-w-[150px]">
+                    <CategoryImage slug={c.slug} className="w-full h-full" showIcon iconSize="w-8 h-8 lg:w-12 lg:h-12" showLabel={false} />
                   </div>
-                  <div className="mt-0.5 text-white/70 text-[10px] lg:text-[11px] font-mono">{count} paket</div>
+                  <div>
+                    <div className="font-display font-700 text-[14px] lg:text-[15px] text-[#111827] group-hover:text-orange transition-colors">
+                      {c.label}
+                    </div>
+                    <div className="mt-0.5 text-[11px] font-mono text-[#98a2b3]">{count} paket</div>
+                  </div>
                 </div>
               </Link>
             );

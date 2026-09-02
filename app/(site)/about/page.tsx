@@ -162,17 +162,15 @@ function Ecosystem({ categories }: { categories: Category[] }) {
                 <CategoryImage
                   slug={c.slug}
                   className="aspect-[16/10] w-full"
-                  showIcon={false}
+                  showIcon
                   showLabel={false}
+                  iconSize="w-10 h-10"
                 />
-                <div className="absolute inset-0 flex flex-col justify-between p-5">
-                  <div className="flex items-center justify-between">
-                    <span className="inline-block px-3 py-1 rounded-full bg-white/90 text-[#171717] text-[12px] font-mono">{c.label}</span>
-                    <span className="w-10 h-10 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center text-white">
-                      {categoryIcon(c.icon)}
-                    </span>
-                  </div>
-                  <span className="text-white font-medium text-[13px] max-w-[85%] leading-snug drop-shadow-sm">{c.tagline}</span>
+                <div className="absolute top-4 left-4">
+                  <span className="inline-block px-3 py-1 rounded-full bg-white text-[#171717] text-[12px] font-mono border border-line shadow-sm">{c.label}</span>
+                </div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className="block text-[#111827] font-medium text-[13px] leading-snug">{c.tagline}</span>
                 </div>
               </Link>
             );
