@@ -1,19 +1,58 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { formatPrice } from "@/lib/packages";
 import { getCategory } from "@/lib/categories";
 import { categoryStyle } from "@/lib/colorMap";
 import { fetchPackages } from "@/lib/catalog";
+import { SITE_URL } from "@/lib/site";
 import Button, { Eyebrow } from "@/components/Button";
 import PackageCard from "@/components/PackageCard";
 import { PinIcon, ClockIcon, StarIcon, CheckIcon, XIcon } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const catalog = await fetchPackages();
+  const pkg = catalog.find((p) => p.slug === slug);
+  if (!pkg) return { title: "Paket tidak ditemukan — KRUI.CO" };
+
+  const cat = getCategory(pkg.category);
+  const title = `${pkg.title} — Paket ${cat?.label || ""} di Krui`;
+  const description = pkg.description
+    ? pkg.description.slice(0, 155).trim() + (pkg.description.length > 155 ? "…" : "")
+    : `${pkg.title} di ${pkg.location || "Krui"} — mulai dari ${formatPrice(pkg.price)}. Dikelola oleh KRUI.CO.`;
+
   return {
-    title: "Paket — KRUI.CO",
-    description: "Paket wisata terkurasi di Krui.",
+    title,
+    description,
+    keywords: [
+      pkg.title,
+      `paket ${cat?.label?.toLowerCase() || ""} Krui`,
+      `wisata ${pkg.location || "Krui"}`,
+      "KRUI.CO",
+      "paket wisata Krui Lampung",
+    ],
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/paket/${slug}`,
+      type: "website",
+      siteName: "KRUI.CO",
+      images: pkg.image
+        ? [{ url: pkg.image, width: 1200, height: 630, alt: pkg.title }]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: pkg.image ? [pkg.image] : [],
+    },
+    alternates: {
+      canonical: `${SITE_URL}/paket/${slug}`,
+    },
   };
 }
 
@@ -28,8 +67,49 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
   const sameCat = catalog.filter((p) => p.slug !== pkg.slug && p.category === pkg.category);
   const similar = sameCat.length ? sameCat : catalog.filter((p) => p.slug !== pkg.slug).slice(0, 4);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: pkg.title,
+    description: pkg.description || `${pkg.title} di ${pkg.location || "Krui"}`,
+    image: pkg.image || undefined,
+    brand: { "@type": "Organization", name: "KRUI.CO" },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "IDR",
+      price: pkg.price,
+      availability: "https://schema.org/InStock",
+      url: `${SITE_URL}/paket/${slug}`,
+    },
+    aggregateRating: pkg.reviews
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: pkg.rating,
+          reviewCount: pkg.reviews,
+        }
+      : undefined,
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Beranda", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Paket", item: `${SITE_URL}/paket` },
+      { "@type": "ListItem", position: 3, name: pkg.title, item: `${SITE_URL}/paket/${slug}` },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <div className="pt-[72px] bg-bg-alt border-b border-line">
         <div className="max-w-content mx-auto px-[18px] lg:px-7 py-8 lg:py-12">
           <div className="mt-6 grid lg:grid-cols-[1.4fr_1fr] gap-10">

@@ -7,10 +7,35 @@ import HeroSection from "@/components/HeroSection";
 import { Package } from "@/lib/packages";
 import { Category } from "@/lib/categories";
 import { fetchCatalog } from "@/lib/catalog";
+import { SITE_URL, SOCIALS } from "@/lib/site";
 import CategoryImage from "@/components/CategoryImage";
 import { reviews } from "@/lib/reviews";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = {
+  title: "KRUI.CO — Platform Wisata Terkurasi Krui, Pesisir Barat Lampung",
+  description:
+    "Jelajahi Krui, Pesisir Barat Lampung — paket wisata, penginapan, selancar, transport, dan pengalaman lokal terkurasi. Harga transparan, tanpa biaya tersembunyi.",
+  keywords: [
+    "wisata Krui",
+    "paket wisata Krui",
+    "Krui Pesisir Barat Lampung",
+    "surfing Tanjung Setia",
+    "pantai Krui",
+    "homestay Krui",
+  ],
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    title: "KRUI.CO — Platform Wisata Terkurasi Krui",
+    description:
+      "Jelajahi Krui — paket wisata, penginapan, selancar, transport, dan pengalaman lokal. Harga transparan.",
+    url: SITE_URL,
+    siteName: "KRUI.CO",
+    type: "website",
+    locale: "id_ID",
+  },
+};
 
 export default async function HomePage() {
   const { packages, categories } = await fetchCatalog();
@@ -20,8 +45,52 @@ export default async function HomePage() {
   const experiences = packages.filter((p) => p.category === "experience").slice(0, 3);
   const countByCat = (slug: string) => packages.filter((p) => p.category === slug).length;
 
+  const orgLd = {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    name: "KRUI.CO",
+    url: SITE_URL,
+    logo: `${SITE_URL}/krui.png`,
+    description:
+      "Platform wisata terkurasi untuk Krui, Pesisir Barat Lampung — paket wisata, penginapan, selancar, transport, dan pengalaman lokal.",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Jl. Raya Krui, Banding Agung",
+      addressRegion: "Lampung",
+      addressCountry: "ID",
+    },
+    sameAs: [SOCIALS.tiktok, SOCIALS.facebook, SOCIALS.instagram],
+    areaServed: {
+      "@type": "Place",
+      name: "Krui, Pesisir Barat, Lampung",
+    },
+  };
+
+  const destinationLd = {
+    "@context": "https://schema.org",
+    "@type": "TouristDestination",
+    name: "Krui, Pesisir Barat Lampung",
+    description:
+      "Surga tersembunyi di pesisir barat Lampung dengan gelombang kelas dunia, pantai keemasan, dan budaya lokal yang autentik.",
+    url: SITE_URL,
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+    touristType: ["Surfer", "Beach lover", "Nature explorer", "Family"],
+    includedInSchema: {
+      "@type": "WebPage",
+      url: SITE_URL,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(destinationLd) }}
+      />
       <HeroSection />
       <CategoriesSection categories={categories} counts={countByCat} />
       <AboutSection />

@@ -1,9 +1,28 @@
 import { Suspense } from "react";
 import PaketListing from "@/components/PaketListing";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata = {
-  title: "Semua Paket — KRUI.CO",
-  description: "Jelajahi semua paket wisata, penginapan, selancar, dan pengalaman di Krui.",
+  title: "Semua Paket Wisata Krui — KRUI.CO",
+  description:
+    "Jelajahi semua paket wisata, penginapan, selancar, transport, dan pengalaman lokal di Krui, Pesisir Barat Lampung.",
+  keywords: [
+    "paket wisata Krui",
+    "daftar wisata Krui",
+    "paket stay Krui",
+    "paket surf Tanjung Setia",
+    "rental Krui",
+    "paket wisata Lampung",
+  ],
+  alternates: { canonical: `${SITE_URL}/paket` },
+  openGraph: {
+    title: "Semua Paket Wisata Krui — KRUI.CO",
+    description: "Jelajahi semua paket wisata, penginapan, selancar, dan pengalaman di Krui.",
+    url: `${SITE_URL}/paket`,
+    siteName: "KRUI.CO",
+    type: "website",
+    locale: "id_ID",
+  },
 };
 
 export default function PaketPage() {

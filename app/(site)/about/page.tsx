@@ -5,12 +5,30 @@ import { Category } from "@/lib/categories";
 import { categoryIcon, CheckIcon } from "@/components/icons";
 import CategoryImage from "@/components/CategoryImage";
 import { fetchCategories } from "@/lib/catalog";
+import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Tentang Kami — KRUI.CO",
-  description: "Kenali KRUI.CO — platform wisata terkurasi untuk Krui, Pesisir Barat Lampung.",
+  description:
+    "Kenali KRUI.CO — platform wisata terkurasi untuk Krui, Pesisir Barat Lampung. Misi kami: menjadikan Krui mudah dijelajahi dan memberdayakan komunitas lokal.",
+  keywords: [
+    "tentang KRUI.CO",
+    "platform wisata Krui",
+    "KRUI.CO Pesisir Barat Lampung",
+    "pariwisata Krui",
+  ],
+  alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: {
+    title: "Tentang Kami — KRUI.CO",
+    description:
+      "Kenali KRUI.CO — platform wisata terkurasi untuk Krui, Pesisir Barat Lampung.",
+    url: `${SITE_URL}/about`,
+    siteName: "KRUI.CO",
+    type: "website",
+    locale: "id_ID",
+  },
 };
 
 export default async function AboutPage() {

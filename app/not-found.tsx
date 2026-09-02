@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Button from "@/components/Button";
 import { Eyebrow } from "@/components/Button";
+
+export const metadata: Metadata = {
+  title: "Halaman Tidak Ditemukan — KRUI.CO",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (
