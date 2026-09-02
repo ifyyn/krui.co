@@ -72,6 +72,16 @@ export const categories: Category[] = [
   },
 ];
 
+let overrides: Category[] | null = null;
+
+export function setCategoryOverrides(cats: Category[]) {
+  overrides = cats.length ? cats : null;
+}
+
 export function getCategory(slug: string): Category | undefined {
+  if (overrides) {
+    const c = overrides.find((x) => x.slug === slug);
+    if (c) return c;
+  }
   return categories.find((c) => c.slug === slug);
 }

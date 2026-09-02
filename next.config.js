@@ -11,6 +11,18 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "dynamic-media-cdn.tripadvisor.com",
+      },
+      {
+        protocol: "https",
+        hostname: "thumb.viva.id",
+      },
+      {
+        protocol: "https",
+        hostname: "assets.pikiran-rakyat.com",
+      },
     ],
   },
 };

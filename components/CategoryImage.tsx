@@ -11,8 +11,8 @@ const images: Record<CategorySlug, string> = {
   experience: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80",
 };
 
-export function getCategoryImage(slug: CategorySlug): string {
-  return images[slug];
+export function getCategoryImage(slug: string): string {
+  return images[slug as CategorySlug] ?? images.tour;
 }
 
 export default function CategoryImage({
@@ -22,7 +22,7 @@ export default function CategoryImage({
   showIcon = true,
   sizes = "(min-width: 1024px) 33vw, 50vw",
 }: {
-  slug: CategorySlug;
+  slug: string;
   className?: string;
   showLabel?: boolean;
   showIcon?: boolean;
@@ -32,7 +32,7 @@ export default function CategoryImage({
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <Image
-        src={images[slug]}
+        src={getCategoryImage(slug)}
         alt={cat?.label ?? slug}
         fill
         sizes={sizes}

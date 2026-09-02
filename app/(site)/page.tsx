@@ -4,21 +4,26 @@ import { categoryIcon, ArrowRightIcon, VerifiedIcon, StarIcon, CheckIcon } from 
 import Button, { Eyebrow } from "@/components/Button";
 import PackageCard from "@/components/PackageCard";
 import HeroSection from "@/components/HeroSection";
-import { getFeatured, getAllPackages, getPackagesByCategory, Package } from "@/lib/packages";
-import { categories } from "@/lib/categories";
+import { Package } from "@/lib/packages";
+import { Category } from "@/lib/categories";
+import { fetchCatalog } from "@/lib/catalog";
 import CategoryImage from "@/components/CategoryImage";
 import { reviews } from "@/lib/reviews";
 
-export default function HomePage() {
-  const featured = getFeatured();
-  const all = getAllPackages();
-  const stays = getPackagesByCategory("stay").slice(0, 3);
-  const experiences = getPackagesByCategory("experience").slice(0, 3);
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const { packages, categories } = await fetchCatalog();
+  const featured = packages.filter((p) => p.featured);
+  const all = packages;
+  const stays = packages.filter((p) => p.category === "stay").slice(0, 3);
+  const experiences = packages.filter((p) => p.category === "experience").slice(0, 3);
+  const countByCat = (slug: string) => packages.filter((p) => p.category === slug).length;
 
   return (
     <>
       <HeroSection />
-      <CategoriesSection />
+      <CategoriesSection categories={categories} counts={countByCat} />
       <AboutSection />
       <FeaturedSection packages={featured} extra={all} />
       <StaysSection packages={stays} />
@@ -31,7 +36,7 @@ export default function HomePage() {
   );
 }
 
-function CategoriesSection() {
+function CategoriesSection({ categories, counts }: { categories: Category[]; counts: (slug: string) => number }) {
   return (
     <section className="py-[56px] lg:py-[72px] bg-bg overflow-hidden">
       <div className="max-w-content mx-auto px-[18px] lg:px-7">
@@ -45,7 +50,7 @@ function CategoriesSection() {
         </div>
         <div className="flex gap-3 lg:gap-5 overflow-x-auto scrollbar-hide -mx-[18px] lg:mx-0 px-[18px] lg:px-0 pb-2 snap-x snap-mandatory">
           {categories.map((c) => {
-            const count = getPackagesByCategory(c.slug).length;
+            const count = counts(c.slug);
             return (
               <Link
                 key={c.slug}

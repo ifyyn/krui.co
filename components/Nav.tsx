@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { categories } from "@/lib/categories";
+import { useCategories } from "@/lib/use-catalog";
 import { MenuIcon, XIcon, ChevronDownIcon, SearchIcon } from "./icons";
 
 interface NavLink {
@@ -23,6 +23,7 @@ export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [paketOpen, setPaketOpen] = useState(false);
   const pathname = usePathname();
+  const { categories } = useCategories();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);

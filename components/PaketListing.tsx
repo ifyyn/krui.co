@@ -2,15 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { categories, CategorySlug, getCategory } from "@/lib/categories";
-import { getAllPackages, Package } from "@/lib/packages";
+import { getCategory } from "@/lib/categories";
+import { Package } from "@/lib/packages";
+import { useCatalog } from "@/lib/use-catalog";
 import { SearchIcon, ChevronDownIcon } from "@/components/icons";
 import { Eyebrow } from "@/components/Button";
 import PackageCard from "@/components/PackageCard";
-
-const tabs = [{ slug: "all" as const, label: "Semua" }, ...categories.map((c) => ({ slug: c.slug as CategorySlug, label: c.label }))];
-
-const allowedCats = categories.map((c) => c.slug);
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
 
@@ -19,18 +16,19 @@ export default function PaketListing() {
   const searchParams = useSearchParams();
   const catParam = searchParams.get("cat");
 
-  const [cat, setCat] = useState<CategorySlug | "all">(allowedCats.includes(catParam as CategorySlug) ? (catParam as CategorySlug) : "all");
+  const { packages: all, categories } = useCatalog();
+  const allowedCats: string[] = categories.map((c) => c.slug);
+
+  const [cat, setCat] = useState<string>("all");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortKey>("featured");
   const [visible, setVisible] = useState(9);
 
   useEffect(() => {
-    const next = allowedCats.includes(catParam as CategorySlug) ? (catParam as CategorySlug) : "all";
+    const next = allowedCats.includes(catParam as string) ? (catParam as string) : "all";
     setCat(next);
     setVisible(9);
-  }, [catParam]);
-
-  const all = getAllPackages();
+  }, [catParam, JSON.stringify(allowedCats)]);
 
   const filtered = useMemo(() => {
     let list: Package[] = all;
@@ -66,9 +64,10 @@ export default function PaketListing() {
   }, [cat, search, sort, all]);
 
   const shown = filtered.slice(0, visible);
-  const activeLabel = cat === "all" ? "Semua paket" : getCategory(cat)?.label;
+  const activeLabel = cat === "all" ? "Semua paket" : getCategory(cat)?.label || cat;
+  const tabs = [{ slug: "all" as const, label: "Semua" }, ...categories.map((c) => ({ slug: c.slug, label: c.label }))];
 
-  const selectTab = (slug: CategorySlug | "all") => {
+  const selectTab = (slug: string) => {
     setCat(slug);
     setVisible(9);
     const params = new URLSearchParams(searchParams.toString());

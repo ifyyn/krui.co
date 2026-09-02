@@ -1,16 +1,14 @@
-import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPackageBySlug, getSimilar, formatPrice, getAllPackages } from "@/lib/packages";
+import Image from "next/image";
+import { formatPrice } from "@/lib/packages";
 import { getCategory } from "@/lib/categories";
 import { categoryStyle } from "@/lib/colorMap";
+import { fetchPackages } from "@/lib/catalog";
 import Button, { Eyebrow } from "@/components/Button";
 import PackageCard from "@/components/PackageCard";
 import { PinIcon, ClockIcon, StarIcon, CheckIcon, XIcon } from "@/components/icons";
 
-export function generateStaticParams() {
-  return getAllPackages().map((p) => ({ slug: p.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   return {
@@ -21,12 +19,14 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
 
 export default async function PackageDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const pkg = getPackageBySlug(slug);
+  const catalog = await fetchPackages();
+  const pkg = catalog.find((p) => p.slug === slug);
   if (!pkg) notFound();
 
   const cat = getCategory(pkg.category)!;
   const style = categoryStyle(pkg.category);
-  const similar = getSimilar(pkg);
+  const sameCat = catalog.filter((p) => p.slug !== pkg.slug && p.category === pkg.category);
+  const similar = sameCat.length ? sameCat : catalog.filter((p) => p.slug !== pkg.slug).slice(0, 4);
 
   return (
     <>

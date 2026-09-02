@@ -2,20 +2,20 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { categories, CategorySlug } from "@/lib/categories";
-import { getAllPackages } from "@/lib/packages";
+import { useCatalog } from "@/lib/use-catalog";
 import { SearchIcon } from "@/components/icons";
 import { Eyebrow } from "@/components/Button";
 import PackageCard from "@/components/PackageCard";
 
-const catFilter: (CategorySlug | "all")[] = ["all", ...categories.map((c) => c.slug)];
-
 export default function SearchClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { packages: all, categories } = useCatalog();
   const [query, setQuery] = useState("");
-  const [cat, setCat] = useState<CategorySlug | "all">("all");
+  const [cat, setCat] = useState<string>("all");
   const [searched, setSearched] = useState(false);
+
+  const catFilter: string[] = ["all", ...categories.map((c) => c.slug)];
 
   useEffect(() => {
     const q = searchParams.get("q");
@@ -24,8 +24,6 @@ export default function SearchClient() {
       setSearched(true);
     }
   }, [searchParams]);
-
-  const all = getAllPackages();
 
   const results = useMemo(() => {
     if (!searched) return [];

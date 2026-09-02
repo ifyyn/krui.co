@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { getPackageBySlug, formatPrice } from "@/lib/packages";
+import { formatPrice } from "@/lib/packages";
+import { usePackages } from "@/lib/use-catalog";
 import { Field, inputCls, selectCls } from "@/components/Form";
 import { PinIcon, ClockIcon, StarIcon } from "@/components/icons";
 
@@ -15,7 +16,8 @@ const budget = ["Belum tahu", "< Rp 500.000", "Rp 500rb – 1jt", "Rp 1jt – 3j
 
 export default function BookingPage() {
   const params = useParams<{ id: string }>();
-  const pkg = getPackageBySlug(params.id);
+  const { packages, loading } = usePackages();
+  const pkg = packages.find((p) => p.slug === params.id);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -23,6 +25,14 @@ export default function BookingPage() {
   const [notes, setNotes] = useState("");
   const [adults, setAdults] = useState("2 orang");
   const [when, setWhen] = useState("Flexibel");
+
+  if (loading) {
+    return (
+      <div className="pt-[72px] max-w-content mx-auto px-[18px] lg:px-7 py-20 text-center">
+        <div className="text-ink-soft">Memuat…</div>
+      </div>
+    );
+  }
 
   if (!pkg) {
     return (

@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { Eyebrow } from "@/components/Button";
 import Button from "@/components/Button";
-import { categories } from "@/lib/categories";
+import { Category } from "@/lib/categories";
 import { categoryIcon, CheckIcon } from "@/components/icons";
 import CategoryImage from "@/components/CategoryImage";
+import { fetchCategories } from "@/lib/catalog";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Tentang Kami — KRUI.CO",
   description: "Kenali KRUI.CO — platform wisata terkurasi untuk Krui, Pesisir Barat Lampung.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const categories = await fetchCategories();
   return (
     <>
       <div className="pt-[72px]">
@@ -31,7 +35,7 @@ export default function AboutPage() {
 
       <WhyKrui />
 
-      <Ecosystem />
+      <Ecosystem categories={categories} />
 
       <FinalCTA />
     </>
@@ -123,7 +127,7 @@ function WhyKrui() {
   );
 }
 
-function Ecosystem() {
+function Ecosystem({ categories }: { categories: Category[] }) {
   return (
     <section className="py-[56px] lg:py-[88px] bg-bg-alt">
       <div className="max-w-content mx-auto px-[18px] lg:px-7">

@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { categories } from "@/lib/categories";
+import { fetchCategories } from "@/lib/catalog";
+import { Category } from "@/lib/categories";
 
-export default function Footer() {
+export default async function Footer() {
+  const categories = await fetchCategories();
   return (
     <footer className="bg-ink text-white mt-auto">
       <div className="max-w-content mx-auto px-[18px] lg:px-7 py-14">

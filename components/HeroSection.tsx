@@ -6,9 +6,9 @@ import { ArrowRightIcon } from "@/components/icons";
 import Button from "@/components/Button";
 
 const heroImages = [
-  "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=2000&q=80",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80",
-  "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=2000&q=80",
+  "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2d/6b/37/dc/caption.jpg?w=900&h=500&s=1",
+  "https://thumb.viva.id/vivalampung/665x374/2023/01/22/63cd5bf29d2aa-pesona-pantai-labuhan-jukung-krui-pesisir-barat_lampung.jpg",
+  "https://assets.pikiran-rakyat.com/crop/0x0:0x0/720x0/webp/photo/2025/03/30/1558284251.jpg",
   "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2000&q=80",
   "https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?auto=format&fit=crop&w=2000&q=80",
   "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?auto=format&fit=crop&w=2000&q=80",

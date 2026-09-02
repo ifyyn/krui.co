@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Inter, DM_Mono } from "next/font/google";
 import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -38,11 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${outfit.variable} ${inter.variable} ${dmMono.variable}`}>
-      <body className="min-h-screen flex flex-col">
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      <body className="min-h-screen flex flex-col">{children}</body>
     </html>
   );
 }
