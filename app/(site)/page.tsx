@@ -127,8 +127,8 @@ function CategoriesSection({ categories, counts }: { categories: Category[]; cou
                 className="group shrink-0"
               >
                 <div className="flex flex-col items-center gap-2.5 text-center">
-                  <div className="aspect-square w-full max-w-[112px] lg:max-w-[150px]">
-                    <CategoryImage slug={c.slug} className="w-full h-full" showIcon iconSize="w-8 h-8 lg:w-12 lg:h-12" showLabel={false} />
+                  <div className="aspect-square w-full max-w-[112px] lg:max-w-[150px] rounded-2xl overflow-hidden">
+                    <CategoryImage slug={c.slug} className="w-full h-full" showIcon={false} showLabel={false} />
                   </div>
                   <div>
                     <div className="font-display font-700 text-[14px] lg:text-[15px] text-[#111827] group-hover:text-orange transition-colors">

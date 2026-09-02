@@ -23,6 +23,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "assets.pikiran-rakyat.com",
       },
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn0.gstatic.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.buspariwisata.id",
+      },
     ],
   },
 };
