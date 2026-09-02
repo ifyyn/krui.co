@@ -32,7 +32,7 @@ export interface AdminPackage {
   updatedAt?: string;
 }
 
-const DEFAULT_API_URL = "http://localhost:5000";
+const DEFAULT_API_URL = "https://brayendtravel.my.id";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL;
 const TOKEN_KEY = "krui_admin_token";
 

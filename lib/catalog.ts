@@ -1,7 +1,7 @@
 import { Package, getAllPackages } from "./packages";
 import { Category, categories as staticCategories, setCategoryOverrides } from "./categories";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://brayendtravel.my.id";
 
 const fallbackImages: Record<string, string> = {
   tour: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",

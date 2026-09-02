@@ -38,7 +38,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
       return;
     }
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/auth/me`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://brayendtravel.my.id"}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error("unauthorized"))))
