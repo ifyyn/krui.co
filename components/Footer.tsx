@@ -53,7 +53,19 @@ export default async function Footer() {
             <ul className="space-y-2.5 text-[14px] text-white/60">
               <li>Jl. Raya Krui, Banding Agung</li>
               <li>Krui, Pesisir Barat, Lampung</li>
-              <li><span className="font-mono">0812-0000-0000</span></li>
+              <li>
+                <a
+                  href="https://wa.me/6285379997771"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-mono hover:text-white transition-colors"
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden="true">
+                    <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.47 1.34 5L2 22l5.17-1.35a9.96 9.96 0 0 0 4.87 1.24h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm5.83 14.16c-.25.7-1.46 1.33-2.03 1.38-.55.05-1.03.25-3.46-.72-2.93-1.16-4.79-4.15-4.94-4.34-.15-.19-1.18-1.57-1.18-2.99 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .57.01.18.01.43-.07.67.52.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.2-.15.33-.3.5-.15.18-.32.4-.46.54-.15.15-.3.31-.13.61.17.3.76 1.26 1.64 2.04 1.13 1.01 2.09 1.32 2.38 1.47.3.15.47.13.64-.08.17-.2.74-.86.93-1.16.2-.3.39-.25.66-.15.26.1 1.68.8 1.97.94.29.15.48.22.55.34.07.12.07.7-.18 1.4z" />
+                  </svg>
+                  +62 853-7999-7771
+                </a>
+              </li>
               <li>halo@krui.co</li>
             </ul>
           </div>
