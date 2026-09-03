@@ -9,12 +9,11 @@ export default async function Footer() {
       <div className="max-w-content mx-auto px-[18px] lg:px-7 py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
           <div>
-            <Link href="/" className="flex items-center gap-2 font-display font-800 text-[22px] tracking-tight">
-              <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-                <path d="M4 20 Q 8 14 12 20 T 20 20 T 28 20" />
-                <path d="M4 24 Q 8 18 12 24 T 20 24 T 28 24" />
-              </svg>
-              KRUI<span className="text-orange">.CO</span>
+            <Link href="/" className="flex items-center">
+              <img src="/krui.png" alt="KRUI.CO" className="h-12 w-auto object-contain" />
+              <span className="font-display font-800 text-[22px] tracking-tight text-white">
+                KRUI<span className="text-orange">.CO</span>
+              </span>
             </Link>
             <p className="mt-4 text-[14px] text-white/60 leading-relaxed max-w-xs">
               Everything you need to explore Krui, in one place. Platform wisata kurasi untuk Krui, Pesisir Barat Lampung.
