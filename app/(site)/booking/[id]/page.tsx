@@ -5,14 +5,10 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { formatPrice } from "@/lib/packages";
 import { usePackages } from "@/lib/use-catalog";
-import { Field, inputCls, selectCls } from "@/components/Form";
+import { Field, inputCls } from "@/components/Form";
 import { PinIcon, ClockIcon, StarIcon } from "@/components/icons";
 
 const WA_NUMBER = "6285379997771";
-
-const travelDates = ["Flexibel", "Dalam 1 bulan", "Dalam 3 bulan", "Lebih dari 3 bulan"];
-const partySize = ["1 orang", "2 orang", "3 - 5 orang", "6 - 10 orang", "Lebih dari 10"];
-const budget = ["Belum tahu", "< Rp 500.000", "Rp 500rb – 1jt", "Rp 1jt – 3jt", "> Rp 3jt"];
 
 export default function BookingPage() {
   const params = useParams<{ id: string }>();
@@ -21,10 +17,12 @@ export default function BookingPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [budgetValue, setBudgetValue] = useState("Belum tahu");
   const [notes, setNotes] = useState("");
-  const [adults, setAdults] = useState("2 orang");
-  const [when, setWhen] = useState("Flexibel");
+  const [adultCount, setAdultCount] = useState(1);
+  const [when, setWhen] = useState("");
+
+  const adultCountNum = Math.max(1, Number(adultCount) || 1);
+  const totalBudget = pkg ? pkg.price * adultCountNum : 0;
 
   if (loading) {
     return (
@@ -52,9 +50,9 @@ export default function BookingPage() {
       `Nama: ${name}`,
       `WhatsApp: ${phone}`,
       `Email: ${email}`,
-      `Jumlah orang: ${adults}`,
-      `Rencana tanggal: ${when}`,
-      `Budget per orang: ${budgetValue}`,
+      `Jumlah orang: ${adultCountNum} orang`,
+      `Rencana tanggal: ${when ? when : "Flexibel"}`,
+      `Perkiraan budget: ${formatPrice(totalBudget)} (${formatPrice(pkg.price)} × ${adultCountNum} orang)`,
     ];
     if (notes.trim()) lines.push(`Catatan: ${notes.trim()}`);
     const message = encodeURIComponent(lines.join("\n"));
@@ -141,30 +139,34 @@ export default function BookingPage() {
 
               <div className="mt-5 grid sm:grid-cols-2 gap-5">
                 <Field label="Jumlah orang">
-                  <div className="relative">
-                    <select value={adults} onChange={(e) => setAdults(e.target.value)} className={selectCls()}>
-                      {partySize.map((s) => <option key={s}>{s}</option>)}
-                    </select>
-                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-soft text-xs">▾</span>
-                  </div>
+                  <input
+                    type="number"
+                    min={1}
+                    value={adultCount}
+                    onChange={(e) => setAdultCount(Number(e.target.value))}
+                    className={inputCls}
+                    placeholder="1"
+                  />
                 </Field>
                 <Field label="Rencana tanggal">
-                  <div className="relative">
-                    <select value={when} onChange={(e) => setWhen(e.target.value)} className={selectCls()}>
-                      {travelDates.map((s) => <option key={s}>{s}</option>)}
-                    </select>
-                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-soft text-xs">▾</span>
-                  </div>
+                  <input
+                    type="date"
+                    value={when}
+                    onChange={(e) => setWhen(e.target.value)}
+                    className={inputCls}
+                  />
                 </Field>
               </div>
 
-              <div className="mt-5">
-                <Field label="Perkiraan budget per orang">
-                  <div className="relative">
-                    <select value={budgetValue} onChange={(e) => setBudgetValue(e.target.value)} className={selectCls()}>
-                      {budget.map((b) => <option key={b}>{b}</option>)}
-                    </select>
-                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-soft text-xs">▾</span>
+              <div className="mt-5 bg-bg-alt border border-line rounded-[10px] p-4">
+                <Field label="Perkiraan budget">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-mono text-[20px] font-500 text-ink">
+                      {formatPrice(totalBudget)}
+                    </span>
+                    <span className="text-[12.5px] text-ink-soft">
+                      ({formatPrice(pkg.price)} × {adultCountNum} orang)
+                    </span>
                   </div>
                 </Field>
               </div>
