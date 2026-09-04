@@ -36,6 +36,10 @@ const nextConfig = {
         hostname: "res.cloudinary.com",
       },
       {
+        protocol: "https",
+        hostname: "brayendtravel.my.id",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "5000",
