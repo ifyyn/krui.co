@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { categoryIcon, ArrowRightIcon, VerifiedIcon, StarIcon, CheckIcon } from "@/components/icons";
+import { categoryIcon, ArrowRightIcon, VerifiedIcon, CheckIcon } from "@/components/icons";
 import Button, { Eyebrow } from "@/components/Button";
 import PackageCard from "@/components/PackageCard";
 import HeroSection from "@/components/HeroSection";
@@ -9,7 +9,6 @@ import { Category } from "@/lib/categories";
 import { fetchCatalog } from "@/lib/catalog";
 import { SITE_URL, SOCIALS } from "@/lib/site";
 import CategoryImage from "@/components/CategoryImage";
-import { reviews } from "@/lib/reviews";
 
 export const dynamic = "force-dynamic";
 
@@ -366,33 +365,78 @@ function WhyUs() {
 }
 
 function Testimonials() {
+  const items = [
+    {
+      name: "Mewish",
+      text: "Pelayanannya sangat baik dan prosesnya mudah. Saya merasa nyaman menggunakan layanan ini.",
+    },
+    {
+      name: "Elizabeth Jeff",
+      text: "Sangat puas dengan pelayanannya. Timnya responsif dan membantu ketika saya membutuhkan bantuan.",
+    },
+    {
+      name: "Emily Thomas",
+      text: "Pengalaman yang menyenangkan. Semuanya berjalan dengan lancar dan sesuai harapan.",
+    },
+  ];
   return (
-    <section className="py-[56px] lg:py-[88px] bg-bg-alt">
-      <div className="max-w-content mx-auto px-[18px] lg:px-7">
-        <div className="text-center mb-10">
+    <section className="py-[56px] lg:py-[88px] bg-[#FAFAFA]">
+      <div className="max-w-content mx-auto px-[18px] lg:px-7 grid lg:grid-cols-[2fr_3fr] gap-10 items-start">
+        <div className="lg:sticky lg:top-28">
           <Eyebrow>Testimoni</Eyebrow>
-          <h2 className="mt-2 font-display font-700 text-[27px] lg:text-[36px] text-ink tracking-tight">
-            Kata para penjelajah
+          <h2 className="mt-3 font-display font-700 text-[27px] lg:text-[36px] text-ink tracking-tight leading-tight">
+            Apa Kata Pelanggan Kami
           </h2>
+          <p className="mt-4 text-[15px] text-ink-soft leading-relaxed max-w-md">
+            Dengarkan pengalaman pelanggan kami. Kami selalu berusaha memberikan
+            layanan terbaik dan menciptakan pengalaman yang menyenangkan bagi setiap
+            pelanggan.
+          </p>
+          <div className="mt-7">
+            <a
+              href="https://www.google.com/maps/search/KRUI.CO"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full text-white font-display font-600 text-[15px] px-6 py-3 bg-orange shadow-[0_10px_25px_-8px_rgba(245,130,31,0.6)] transition-colors hover:brightness-95"
+            >
+              Lihat Selengkapnya
+              <ArrowRightIcon className="w-5 h-5" />
+            </a>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {reviews.map((r) => (
-            <figure key={r.id} className="bg-white border border-line rounded-card p-6 flex flex-col">
-              <div className="flex gap-1 text-orange">
-                {Array.from({ length: r.rating }).map((_, i) => (
-                  <StarIcon key={i} className="w-4 h-4 fill-orange text-orange" />
-                ))}
-              </div>
-              <blockquote className="mt-3 text-[14px] text-ink-soft leading-relaxed flex-1">
-                “{r.text}”
+
+        <div className="space-y-4 lg:space-y-5">
+          {items.map((it, i) => (
+            <figure
+              key={it.name}
+              className="relative bg-white border border-line rounded-card px-6 py-6 pl-7 pr-12 shadow-card overflow-hidden"
+            >
+              <div
+                className="absolute inset-y-0 left-0 w-[3px]"
+                style={{
+                  background:
+                    i === 1
+                      ? "linear-gradient(180deg, #8b5cf6, #ec4899, #f5821f)"
+                      : "#e5e7eb",
+                }}
+              />
+              <svg
+                className="absolute top-5 right-6 w-9 h-9 text-[#8b5cf6]/20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden
+              >
+                <path d="M9.6 4.8c-3.5 1.1-5.6 3.9-5.6 7.8v6.6h6.6V12H7.1c.2-2.4 1.4-4 3.2-4.7L9.6 4.8zm9.2 0c-3.5 1.1-5.6 3.9-5.6 7.8v6.6h6.6V12h-3.5c.2-2.4 1.4-4 3.2-4.7L18.8 4.8z" />
+              </svg>
+              <blockquote className="text-[14px] text-ink-soft leading-relaxed mt-1">
+                “{it.text}”
               </blockquote>
-              <figcaption className="mt-5 pt-4 border-t border-line flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-blue-soft text-blue flex items-center justify-center">
-                  {r.name.charAt(0)}
+              <figcaption className="mt-5 flex items-center gap-3">
+                <span className="w-11 h-11 rounded-full bg-gradient-to-br from-[#8b5cf6] to-[#f5821f] text-white font-display font-600 flex items-center justify-center shrink-0">
+                  {it.name.charAt(0)}
                 </span>
-                <div>
-                  <div className="text-[14px] font-display font-600 text-ink">{r.name}</div>
-                  <div className="text-[12px] text-ink-soft">{r.location} · {r.package}</div>
+                <div className="text-[15px] font-display font-700 text-ink">
+                  {it.name}
                 </div>
               </figcaption>
             </figure>

@@ -11,6 +11,7 @@ import {
   fmtPrice,
 } from "@/components/admin/ui";
 import { apiDeletePackage, apiGetPackages, AdminPackage } from "@/lib/admin-api";
+import { resolveImageUrl } from "@/lib/catalog";
 
 export default function AdminPackagesPage() {
   const [packages, setPackages] = useState<AdminPackage[] | null>(null);
@@ -92,7 +93,7 @@ export default function AdminPackagesPage() {
               <div className="w-14 h-14 shrink-0 rounded-lg bg-[#f2f4f7] overflow-hidden">
                 {p.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.image} alt="" className="w-full h-full object-cover" />
+                  <img src={resolveImageUrl(p.image)} alt="" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-[#98a2b3] text-lg">
                     ▤

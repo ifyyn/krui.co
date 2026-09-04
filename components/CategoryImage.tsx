@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getCategory } from "@/lib/categories";
+import { resolveImageUrl } from "@/lib/catalog";
 import { categoryIcon } from "./icons";
 
 const images: Record<string, string> = {
@@ -15,6 +16,8 @@ const images: Record<string, string> = {
 };
 
 export function getCategoryImage(slug: string): string {
+  const cat = getCategory(slug);
+  if (cat?.image?.trim()) return resolveImageUrl(cat.image);
   return images[slug] ?? images.tour;
 }
 

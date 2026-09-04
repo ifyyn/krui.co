@@ -8,7 +8,7 @@ import { usePackages } from "@/lib/use-catalog";
 import { Field, inputCls, selectCls } from "@/components/Form";
 import { PinIcon, ClockIcon, StarIcon } from "@/components/icons";
 
-const WA_NUMBER = "6281200000000";
+const WA_NUMBER = "6285379997771";
 
 const travelDates = ["Flexibel", "Dalam 1 bulan", "Dalam 3 bulan", "Lebih dari 3 bulan"];
 const partySize = ["1 orang", "2 orang", "3 - 5 orang", "6 - 10 orang", "Lebih dari 10"];

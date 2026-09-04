@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import {
   Badge,
@@ -16,11 +16,14 @@ import {
 } from "@/components/admin/ui";
 import {
   apiGetCategories,
-  apiCreateCategory,
-  apiUpdateCategory,
+  apiCreateCategoryFormData,
+  apiUpdateCategoryFormData,
   apiDeleteCategory,
   AdminCategory,
 } from "@/lib/admin-api";
+import { resolveImageUrl } from "@/lib/catalog";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const colorOptions = ["blue", "green", "orange", "surf", "rental", "experience"];
 const iconOptions = ["compass", "bed", "car", "surf", "bike", "star"];
@@ -40,6 +43,7 @@ const emptyForm = {
   description: "",
   color: "blue",
   icon: "compass",
+  image: "",
 };
 
 export default function AdminCategoriesPage() {
@@ -48,8 +52,11 @@ export default function AdminCategoriesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<AdminCategory | null>(null);
   const [form, setForm] = useState({ ...emptyForm });
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const load = useCallback(() => {
     setError("");
@@ -64,6 +71,8 @@ export default function AdminCategoriesPage() {
   const openCreate = () => {
     setEditing(null);
     setForm({ ...emptyForm });
+    setFile(null);
+    setPreview(null);
     setFormError("");
     setModalOpen(true);
   };
@@ -76,20 +85,54 @@ export default function AdminCategoriesPage() {
       description: c.description || "",
       color: c.color || "blue",
       icon: c.icon || "compass",
+      image: c.image || "",
     });
+    setFile(null);
+    setPreview(c.image ? resolveImageUrl(c.image) : null);
     setFormError("");
     setModalOpen(true);
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (!f.type.startsWith("image/")) {
+      setFormError("Hanya file gambar yang diperbolehkan");
+      return;
+    }
+    if (f.size > 2 * 1024 * 1024) {
+      setFormError("Ukuran gambar maksimal 2MB");
+      return;
+    }
+    setFormError("");
+    setFile(f);
+    const reader = new FileReader();
+    reader.onload = (ev) => setPreview(ev.target?.result as string);
+    reader.readAsDataURL(f);
+  };
+
+  const removeImage = () => {
+    setFile(null);
+    setPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
     setBusy(true);
+    const formData = new FormData();
+    formData.append("label", form.label);
+    formData.append("tagline", form.tagline);
+    formData.append("description", form.description);
+    formData.append("color", form.color);
+    formData.append("icon", form.icon);
+    if (file) formData.append("image", file);
     try {
       if (editing) {
-        await apiUpdateCategory(editing.id, form);
+        await apiUpdateCategoryFormData(editing.id, formData);
       } else {
-        await apiCreateCategory(form);
+        await apiCreateCategoryFormData(formData);
       }
       setModalOpen(false);
       load();
@@ -223,6 +266,51 @@ export default function AdminCategoriesPage() {
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 placeholder="Deskripsi singkat kategori"
               />
+            </Field>
+            <Field label="Gambar kategori">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={onFileChange}
+                className="hidden"
+              />
+              {preview ? (
+                <div className="relative rounded-lg border border-[#e5e7eb] overflow-hidden bg-[#f6f7f9]">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-full h-32 object-cover"
+                  />
+                  <div className="absolute top-2 right-2 flex gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="bg-white/90 backdrop-blur text-[13px] font-600 text-[#111827] px-3 py-1.5 rounded-lg border border-[#e5e7eb] hover:bg-white transition-colors cursor-pointer"
+                    >
+                      Ganti
+                    </button>
+                    <button
+                      type="button"
+                      onClick={removeImage}
+                      className="bg-white/90 backdrop-blur text-[13px] font-600 text-red-600 px-3 py-1.5 rounded-lg border border-[#e5e7eb] hover:bg-white transition-colors cursor-pointer"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex flex-col items-center justify-center gap-1.5 h-28 rounded-lg border-2 border-dashed border-[#d0d5dd] bg-[#f6f7f9] cursor-pointer hover:border-orange hover:bg-orange-50/50 transition-colors"
+                >
+                  <svg className="w-8 h-8 text-[#98a2b3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                  </svg>
+                  <span className="text-[13px] text-[#667085]">Klik untuk upload gambar</span>
+                  <span className="text-[12px] text-[#98a2b3]">JPEG, PNG, WebP, GIF (maks. 2MB)</span>
+                </div>
+              )}
             </Field>
             <div className="grid grid-cols-2 gap-4">
               <Field label="Warna">

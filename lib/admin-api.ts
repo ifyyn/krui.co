@@ -6,6 +6,7 @@ export interface AdminCategory {
   description?: string;
   color: string;
   icon: string;
+  image?: string;
   packageCount?: number;
 }
 
@@ -155,6 +156,51 @@ export function apiDeleteCategory(id: number): Promise<{ message: string }> {
   return request<{ message: string }>(`/api/categories/${id}`, { method: "DELETE" });
 }
 
+export async function apiCreateCategoryFormData(
+  formData: FormData
+): Promise<AdminCategory> {
+  const token = getToken();
+  const res = await fetch(`${API_URL}/api/categories`, {
+    method: "POST",
+    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: formData,
+  });
+  let data: unknown = null;
+  try { data = await res.json(); } catch { data = null; }
+  if (!res.ok) {
+    const message =
+      data && typeof data === "object" && "message" in data
+        ? String((data as { message: unknown }).message)
+        : "Terjadi kesalahan";
+    if (res.status === 401) clearToken();
+    throw new ApiError(message, res.status);
+  }
+  return data as AdminCategory;
+}
+
+export async function apiUpdateCategoryFormData(
+  id: number,
+  formData: FormData
+): Promise<AdminCategory> {
+  const token = getToken();
+  const res = await fetch(`${API_URL}/api/categories/${id}`, {
+    method: "PUT",
+    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: formData,
+  });
+  let data: unknown = null;
+  try { data = await res.json(); } catch { data = null; }
+  if (!res.ok) {
+    const message =
+      data && typeof data === "object" && "message" in data
+        ? String((data as { message: unknown }).message)
+        : "Terjadi kesalahan";
+    if (res.status === 401) clearToken();
+    throw new ApiError(message, res.status);
+  }
+  return data as AdminCategory;
+}
+
 export function apiGetPackages(): Promise<AdminPackage[]> {
   return request<AdminPackage[]>("/api/packages");
 }
@@ -176,4 +222,53 @@ export function apiUpdatePackage(
 
 export function apiDeletePackage(id: number): Promise<{ message: string }> {
   return request<{ message: string }>(`/api/packages/${id}`, { method: "DELETE" });
+}
+
+export async function apiCreatePackageFormData(
+  formData: FormData
+): Promise<AdminPackage> {
+  const token = getToken();
+  const res = await fetch(`${API_URL}/api/packages`, {
+    method: "POST",
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+  let data: unknown = null;
+  try { data = await res.json(); } catch { data = null; }
+  if (!res.ok) {
+    const message =
+      data && typeof data === "object" && "message" in data
+        ? String((data as { message: unknown }).message)
+        : "Terjadi kesalahan";
+    if (res.status === 401) clearToken();
+    throw new ApiError(message, res.status);
+  }
+  return data as AdminPackage;
+}
+
+export async function apiUpdatePackageFormData(
+  id: number,
+  formData: FormData
+): Promise<AdminPackage> {
+  const token = getToken();
+  const res = await fetch(`${API_URL}/api/packages/${id}`, {
+    method: "PUT",
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+  let data: unknown = null;
+  try { data = await res.json(); } catch { data = null; }
+  if (!res.ok) {
+    const message =
+      data && typeof data === "object" && "message" in data
+        ? String((data as { message: unknown }).message)
+        : "Terjadi kesalahan";
+    if (res.status === 401) clearToken();
+    throw new ApiError(message, res.status);
+  }
+  return data as AdminPackage;
 }

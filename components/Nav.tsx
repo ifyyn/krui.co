@@ -114,7 +114,7 @@ export default function Nav() {
             )}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2.5">
             <Link
               href="/search"
               className="w-10 h-10 rounded-full border border-line flex items-center justify-center text-ink-soft hover:text-blue hover:border-blue transition-colors"
@@ -122,6 +122,14 @@ export default function Nav() {
             >
               <SearchIcon className="w-5 h-5" />
             </Link>
+            <a
+              href="https://wa.me/6285379997771?text=Halo%20KRUI.CO%2C%20saya%20ingin%20melakukan%20booking."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-orange text-white font-display font-600 text-[14px] px-5 py-2.5 transition-colors hover:brightness-95"
+            >
+              Booking Now
+            </a>
           </div>
 
           <button

@@ -3,6 +3,12 @@ import { Category, categories as staticCategories, setCategoryOverrides } from "
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://brayendtravel.my.id";
 
+export function resolveImageUrl(url: string | undefined | null): string {
+  if (!url || !url.trim()) return "";
+  if (url.startsWith("http")) return url;
+  return `${API_URL}${url}`;
+}
+
 const fallbackImages: Record<string, string> = {
   tour: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
   stay: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80",
@@ -20,6 +26,7 @@ interface PublicCategory {
   description?: string;
   color: string;
   icon: string;
+  image?: string;
   packageCount?: number;
 }
 
@@ -62,7 +69,7 @@ async function getJson<T>(path: string, timeoutMs = 4000): Promise<T | null> {
 
 function toPackage(p: PublicPackage, i: number): Package {
   const cat = p.category || "tour";
-  const image = p.image?.trim() ? p.image : fallbackImages[cat] || fallbackImages.tour;
+  const image = resolveImageUrl(p.image) || fallbackImages[cat] || fallbackImages.tour;
   return {
     id: String(p.id),
     slug: p.slug,
@@ -92,6 +99,7 @@ function toCategory(c: PublicCategory): Category {
     color: (c.color || "blue") as Category["color"],
     icon: (c.icon || "compass") as Category["icon"],
     description: c.description || "",
+    image: resolveImageUrl(c.image) || undefined,
   };
 }
 

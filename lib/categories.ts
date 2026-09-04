@@ -13,6 +13,7 @@ export interface Category {
   color: "blue" | "green" | "orange" | "surf" | "rental" | "experience";
   description: string;
   icon: "compass" | "bed" | "car" | "surf" | "bike" | "star";
+  image?: string;
 }
 
 export const categories: Category[] = [
