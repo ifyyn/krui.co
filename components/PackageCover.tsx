@@ -13,11 +13,10 @@ export default function PackageCover({
 }) {
   const cat = getCategory(pkg.category);
   const style = categoryStyle(pkg.category);
-  const isRental = pkg.category === "rental";
   const noImage = !pkg.image || !pkg.image.trim();
   return (
     <div className={`relative overflow-hidden ${className}`}>
-      {isRental || noImage ? (
+      {noImage ? (
         <div className={`absolute inset-0 bg-gradient-to-br ${style.gradient}`} />
       ) : (
         <Image
@@ -28,7 +27,7 @@ export default function PackageCover({
           className="object-cover"
         />
       )}
-      {(isRental || noImage) && (
+      {noImage && (
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-white/90">{categoryIcon(cat?.icon || "bike")}</span>
         </div>
