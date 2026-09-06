@@ -9,6 +9,9 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: "▦" },
   { href: "/admin/packages", label: "Paket", icon: "▤" },
   { href: "/admin/categories", label: "Kategori", icon: "▣" },
+  { href: "/admin/articles", label: "Artikel", icon: "▨" },
+  { href: "/admin/article-categories", label: "Kategori Artikel", icon: "▧" },
+  { href: "/admin/tentang-krui", label: "Tentang Krui", icon: "◈" },
   { href: "/admin/settings", label: "Pengaturan", icon: "⚙" },
 ];
 

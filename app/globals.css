@@ -143,3 +143,127 @@
 .hero-kenburns-5 {
   animation: kenBurns5 6s ease-out forwards;
 }
+
+/* Rich text editor (TipTap) & rendered article body — Word-like typography */
+.rte-content,
+.prose-article {
+  color: #262626;
+  font-size: 15.5px;
+  line-height: 1.8;
+  word-wrap: break-word;
+}
+.rte-content:focus {
+  outline: none;
+}
+.rte-content p,
+.prose-article p {
+  margin: 0 0 1.1em;
+}
+.rte-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #98a2b3;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+.rte-content h1,
+.rte-content h2,
+.rte-content h3,
+.prose-article h1,
+.prose-article h2,
+.prose-article h3 {
+  font-weight: 700;
+  line-height: 1.3;
+  color: #111827;
+  margin: 1.6em 0 0.6em;
+}
+.rte-content h1,
+.prose-article h1 {
+  font-size: 1.7em;
+}
+.rte-content h2,
+.prose-article h2 {
+  font-size: 1.4em;
+}
+.rte-content h3,
+.prose-article h3 {
+  font-size: 1.15em;
+}
+.rte-content a,
+.prose-article a {
+  color: #1e6fd9;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rte-content ul,
+.rte-content ol,
+.prose-article ul,
+.prose-article ol {
+  margin: 0 0 1.2em;
+  padding-left: 1.5em;
+}
+.rte-content ul,
+.prose-article ul {
+  list-style: disc;
+}
+.rte-content ol,
+.prose-article ol {
+  list-style: decimal;
+}
+.rte-content li,
+.prose-article li {
+  margin: 0.35em 0;
+}
+.rte-content blockquote,
+.prose-article blockquote {
+  margin: 1.2em 0;
+  padding: 0.4em 1.2em;
+  border-left: 4px solid #f5821f;
+  background: #fdecda;
+  color: #5b5952;
+  font-style: italic;
+}
+.rte-content code,
+.prose-article code {
+  background: #f3f0e9;
+  border-radius: 6px;
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+  font-family: "DM Mono", monospace;
+}
+.rte-content pre,
+.prose-article pre {
+  background: #171717;
+  color: #fafaf8;
+  border-radius: 10px;
+  padding: 1em 1.2em;
+  margin: 1.2em 0;
+  overflow-x: auto;
+}
+.rte-content pre code,
+.prose-article pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+.rte-content img,
+.prose-article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 1.4em auto;
+  display: block;
+}
+.rte-content hr,
+.prose-article hr {
+  border: none;
+  border-top: 1px solid #e7e3d8;
+  margin: 2em 0;
+}
+.rte-content .is-active-note {
+  background: transparent;
+}
+.rte-content [data-type="horizontalRule"],
+.prose-article [data-type="horizontalRule"] {
+  display: block;
+}

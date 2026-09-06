@@ -43,7 +43,9 @@ export default async function Footer() {
             <h4 className="font-display font-600 text-[15px] text-white/90 mb-4">Perusahaan</h4>
             <ul className="space-y-2.5">
               <li><Link href="/about" className="text-[14px] text-white/60 hover:text-white transition-colors">Tentang Kami</Link></li>
+              <li><Link href="/tentang-krui" className="text-[14px] text-white/60 hover:text-white transition-colors">Tentang Krui</Link></li>
               <li><Link href="/contact" className="text-[14px] text-white/60 hover:text-white transition-colors">Kontak</Link></li>
+              <li><Link href="/artikel" className="text-[14px] text-white/60 hover:text-white transition-colors">Artikel</Link></li>
               <li><Link href="/search" className="text-[14px] text-white/60 hover:text-white transition-colors">Cari Paket</Link></li>
             </ul>
           </div>

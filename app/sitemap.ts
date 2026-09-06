@@ -7,6 +7,8 @@ interface SitemapPackage {
   slug: string;
 }
 
+interface SitemapArticle extends SitemapPackage {}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -20,6 +22,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/artikel`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/tentang-krui`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/about`,
@@ -60,5 +74,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // fallback tanpa halaman dinamis
   }
 
-  return [...staticPages, ...packagePages];
+  let articlePages: MetadataRoute.Sitemap = [];
+  try {
+    const res = await fetch(`${API_URL}/api/public/articles`, {
+      signal: AbortSignal.timeout(4000),
+      next: { revalidate: 3600 },
+    });
+    if (res.ok) {
+      const data: SitemapArticle[] = await res.json();
+      articlePages = data.map((a) => ({
+        url: `${SITE_URL}/artikel/${a.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.7,
+      }));
+    }
+  } catch {
+    // fallback tanpa halaman dinamis
+  }
+
+  return [...staticPages, ...packagePages, ...articlePages];
 }

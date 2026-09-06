@@ -33,6 +33,47 @@ export interface AdminPackage {
   updatedAt?: string;
 }
 
+export interface AdminArticleCategory {
+  id: number;
+  slug: string;
+  label: string;
+  description?: string;
+  color?: string;
+  articleCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface AdminArticle {
+  id: number;
+  slug: string;
+  title: string;
+  articleCategoryId: number;
+  category?: { id: number; slug: string; label: string; color?: string } | null;
+  excerpt?: string;
+  content?: string;
+  image?: string;
+  author?: string;
+  tags?: string[];
+  featured?: boolean;
+  published?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface KruiSection {
+  id: number;
+  slug: string;
+  title: string;
+  summary?: string;
+  content?: string;
+  image?: string;
+  sortOrder: number;
+  active: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 const DEFAULT_API_URL = "https://brayendtravel.my.id";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL;
 const TOKEN_KEY = "krui_admin_token";
@@ -271,4 +312,90 @@ export async function apiUpdatePackageFormData(
     throw new ApiError(message, res.status);
   }
   return data as AdminPackage;
+}
+
+export function apiGetArticleCategories(): Promise<AdminArticleCategory[]> {
+  return request<AdminArticleCategory[]>("/api/article-categories");
+}
+
+export function apiCreateArticleCategory(body: Partial<AdminArticleCategory>): Promise<AdminArticleCategory> {
+  return request<AdminArticleCategory>("/api/article-categories", { method: "POST", body });
+}
+
+export function apiUpdateArticleCategory(
+  id: number,
+  body: Partial<AdminArticleCategory>
+): Promise<AdminArticleCategory> {
+  return request<AdminArticleCategory>(`/api/article-categories/${id}`, { method: "PUT", body });
+}
+
+export function apiDeleteArticleCategory(id: number): Promise<{ message: string }> {
+  return request<{ message: string }>(`/api/article-categories/${id}`, { method: "DELETE" });
+}
+
+export function apiGetArticles(): Promise<AdminArticle[]> {
+  return request<AdminArticle[]>("/api/articles");
+}
+
+export function apiGetArticle(id: number): Promise<AdminArticle> {
+  return request<AdminArticle>(`/api/articles/${id}`);
+}
+
+export function apiDeleteArticle(id: number): Promise<{ message: string }> {
+  return request<{ message: string }>(`/api/articles/${id}`, { method: "DELETE" });
+}
+
+async function formDataRequest<T>(path: string, formData: FormData, method: string): Promise<T> {
+  const token = getToken();
+  const res = await fetch(`${API_URL}${path}`, {
+    method,
+    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: formData,
+  });
+  let data: unknown = null;
+  try { data = await res.json(); } catch { data = null; }
+  if (!res.ok) {
+    const message =
+      data && typeof data === "object" && "message" in data
+        ? String((data as { message: unknown }).message)
+        : "Terjadi kesalahan";
+    if (res.status === 401) clearToken();
+    throw new ApiError(message, res.status);
+  }
+  return data as T;
+}
+
+export function apiCreateArticleFormData(formData: FormData): Promise<AdminArticle> {
+  return formDataRequest<AdminArticle>("/api/articles", formData, "POST");
+}
+
+export function apiUpdateArticleFormData(id: number, formData: FormData): Promise<AdminArticle> {
+  return formDataRequest<AdminArticle>(`/api/articles/${id}`, formData, "PUT");
+}
+
+export function apiGetKruiSections(): Promise<KruiSection[]> {
+  return request<KruiSection[]>("/api/tentang-krui");
+}
+
+export function apiGetKruiSection(id: number): Promise<KruiSection> {
+  return request<KruiSection>(`/api/tentang-krui/${id}`);
+}
+
+export function apiDeleteKruiSection(id: number): Promise<{ message: string }> {
+  return request<{ message: string }>(`/api/tentang-krui/${id}`, { method: "DELETE" });
+}
+
+export function apiReorderKruiSections(ids: number[]): Promise<KruiSection[]> {
+  return request<KruiSection[]>("/api/tentang-krui/reorder", {
+    method: "POST",
+    body: { ids },
+  });
+}
+
+export function apiCreateKruiSectionFormData(formData: FormData): Promise<KruiSection> {
+  return formDataRequest<KruiSection>("/api/tentang-krui", formData, "POST");
+}
+
+export function apiUpdateKruiSectionFormData(id: number, formData: FormData): Promise<KruiSection> {
+  return formDataRequest<KruiSection>(`/api/tentang-krui/${id}`, formData, "PUT");
 }

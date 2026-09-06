@@ -14,6 +14,8 @@ interface NavLink {
 const links: NavLink[] = [
   { href: "/", label: "Beranda" },
   { href: "/paket", label: "Paket" },
+  { href: "/tentang-krui", label: "Tentang Krui" },
+  { href: "/artikel", label: "Artikel" },
   { href: "/about", label: "Tentang" },
   { href: "/contact", label: "Kontak" },
 ];
