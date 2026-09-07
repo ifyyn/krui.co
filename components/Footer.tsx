@@ -53,7 +53,6 @@ export default async function Footer() {
           <div>
             <h4 className="font-display font-600 text-[15px] text-white/90 mb-4">Hubungi Kami</h4>
             <ul className="space-y-2.5 text-[14px] text-white/60">
-              <li>Jl. Raya Krui, Banding Agung</li>
               <li>Krui, Pesisir Barat, Lampung</li>
               <li>
                 <a
