@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Button, { Eyebrow } from "@/components/Button";
-import { Field, inputCls, SuccessState, useFormFlow } from "@/components/Form";
+import { Field, inputCls } from "@/components/Form";
 import { PinIcon, ClockIcon } from "@/components/icons";
 import { SOCIALS } from "@/lib/site";
+
+const WA_NUMBER = "6285128009771";
 
 const channels = [
   {
@@ -12,7 +13,7 @@ const channels = [
     value: "+62 851-2800-9771",
     sub: "Respon cepat 08.00–21.00 WIB",
     icon: "wa",
-    href: "https://wa.me/6285128009771",
+    href: `https://wa.me/${WA_NUMBER}`,
   },
   {
     label: "Email",
@@ -45,9 +46,6 @@ function ChannelIcon({ name }: { name: string }) {
 }
 
 export default function ContactForm() {
-  const { submitted, submit } = useFormFlow();
-  const [touched, setTouched] = useState(false);
-
   return (
     <div className="pt-[72px]">
       <div className="bg-bg-alt border-b border-line">
@@ -140,55 +138,63 @@ export default function ContactForm() {
           </div>
 
           <div>
-            {submitted ? (
-              <SuccessState
-                title="Pesan terkirim!"
-                message="Terima kasih sudah menghubungi KRUI.CO. Tim kami akan membalas paling lambat 1×24 jam ke email atau WhatsApp kamu."
-                note="Sementara menunggu, kamu bisa terus menjelajahi paket kami."
-                onDone="/paket"
-                doneLabel="Jelajahi paket"
-              />
-            ) : (
-              <form
-                className="bg-white border border-line rounded-card p-6 lg:p-8"
-                onSubmit={(e) => {
-                  setTouched(true);
-                  submit(e);
-                }}
-                noValidate={false}
-              >
-                <h2 className="font-display font-700 text-[22px] text-ink">Kirim pesan</h2>
-                <div className="mt-6 grid sm:grid-cols-2 gap-5">
-                  <Field label="Nama lengkap">
-                    <input required className={inputCls} placeholder="Nama kamu" />
-                  </Field>
-                  <Field label="Nomor WhatsApp">
-                    <input required className={inputCls} placeholder="08xx-xxxx-xxxx" />
-                  </Field>
-                </div>
-                <div className="mt-5">
-                  <Field label="Email">
-                    <input type="email" required className={inputCls} placeholder="kamu@email.com" />
-                  </Field>
-                </div>
-                <div className="mt-5">
-                  <Field label="Subjek" hint="Misal: tanya paket Surf, atau saran itinerary">
-                    <input required className={inputCls} placeholder="Pilih topik atau tulis sendiri" />
-                  </Field>
-                </div>
-                <div className="mt-5">
-                  <Field label="Pesan">
-                    <textarea required rows={5} className={inputCls} placeholder="Tulis pertanyaanmu di sini…" />
-                  </Field>
-                </div>
-                <div className="mt-6 flex items-center gap-3">
-                  <Button type="submit" variant="orange" className="px-8 py-3">Kirim pesan</Button>
-                  {touched && (
-                    <span className="text-[12px] text-ink-soft">Cek kembali isianmu sebelum kirim</span>
-                  )}
-                </div>
-              </form>
-            )}
+            <form
+              className="bg-white border border-line rounded-card p-6 lg:p-8"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const fd = new FormData(e.currentTarget);
+                const nama = String(fd.get("nama") || "").trim();
+                const wa = String(fd.get("wa") || "").trim();
+                const email = String(fd.get("email") || "").trim();
+                const subjek = String(fd.get("subjek") || "").trim();
+                const pesan = String(fd.get("pesan") || "").trim();
+
+                const text = [
+                  `Halo KRUI.CO! Saya ${nama}.`,
+                  wa ? `No. WhatsApp: ${wa}` : "",
+                  email ? `Email: ${email}` : "",
+                  subjek ? `Subjek: ${subjek}` : "",
+                  "",
+                  pesan,
+                ]
+                  .filter((l) => l !== "")
+                  .join("\n");
+
+                window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, "_blank");
+              }}
+              noValidate={false}
+            >
+              <h2 className="font-display font-700 text-[22px] text-ink">Kirim pesan</h2>
+              <div className="mt-6 grid sm:grid-cols-2 gap-5">
+                <Field label="Nama lengkap">
+                  <input name="nama" required className={inputCls} placeholder="Nama kamu" />
+                </Field>
+                <Field label="Nomor WhatsApp">
+                  <input name="wa" required className={inputCls} placeholder="08xx-xxxx-xxxx" />
+                </Field>
+              </div>
+              <div className="mt-5">
+                <Field label="Email">
+                  <input name="email" type="email" required className={inputCls} placeholder="kamu@email.com" />
+                </Field>
+              </div>
+              <div className="mt-5">
+                <Field label="Subjek" hint="Misal: tanya paket Surf, atau saran itinerary">
+                  <input name="subjek" required className={inputCls} placeholder="Pilih topik atau tulis sendiri" />
+                </Field>
+              </div>
+              <div className="mt-5">
+                <Field label="Pesan">
+                  <textarea name="pesan" required rows={5} className={inputCls} placeholder="Tulis pertanyaanmu di sini…" />
+                </Field>
+              </div>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <Button type="submit" variant="orange" className="px-8 py-3">Kirim pesan</Button>
+                <span className="text-[12px] text-ink-soft">
+                  Pesan akan lanjut ke WhatsApp KRUI.CO dengan isian otomatis.
+                </span>
+              </div>
+            </form>
           </div>
         </div>
       </div>
