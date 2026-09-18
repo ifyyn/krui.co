@@ -454,8 +454,8 @@ function Guide() {
         <div className="relative order-2 lg:order-1">
           <div className="relative aspect-[4/3] lg:aspect-square rounded-lg2 w-full overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=80"
-              alt="Pemandangan alam perbukitan dan danau di Krui"
+              src="https://res.cloudinary.com/dv0uopb3q/image/upload/v1788534180/WhatsApp_Image_2026-09-04_at_21.28.11_zzgtct.jpg"
+              alt="Pantai dan laut di Krui, Pesisir Barat Lampung"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { fetchKruiSections, isHtml, stripHtml, PublicKruiSection } from "@/lib/krui";
+import { TentangKruiImage } from "@/components/TentangKruiImage";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -142,12 +142,10 @@ function TentangKruiHero({ section }: { section: PublicKruiSection }) {
     <section id={`bagian-${section.slug}`} className="relative">
       <div className="relative h-[340px] lg:h-[480px] rounded-card overflow-hidden border border-line">
         {section.image ? (
-          <Image
+          <TentangKruiImage
             src={section.image}
             alt={section.title}
-            fill
             priority
-            className="object-cover"
             sizes="(max-width: 1280px) 100vw, 1280px"
           />
         ) : (
@@ -186,11 +184,9 @@ function TentangKruiRow({ section, index }: { section: PublicKruiSection; index:
         <div className={flip ? "lg:order-2" : ""}>
           <div className="relative aspect-[16/11] rounded-card overflow-hidden border border-line">
             {section.image ? (
-              <Image
+              <TentangKruiImage
                 src={section.image}
                 alt={section.title}
-                fill
-                className="object-cover"
                 sizes="(max-width: 1280px) 50vw, 640px"
               />
             ) : (
