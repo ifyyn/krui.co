@@ -8,7 +8,7 @@ import { usePackages } from "@/lib/use-catalog";
 import { Field, inputCls } from "@/components/Form";
 import { PinIcon, ClockIcon, StarIcon } from "@/components/icons";
 
-const WA_NUMBER = "6285379997771";
+const WA_NUMBER = "6285128009771";
 
 export default function BookingPage() {
   const params = useParams<{ id: string }>();

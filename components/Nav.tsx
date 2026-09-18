@@ -125,7 +125,7 @@ export default function Nav() {
               <SearchIcon className="w-5 h-5" />
             </Link>
             <a
-              href="https://wa.me/6285379997771?text=Halo%20KRUI.CO%2C%20saya%20ingin%20melakukan%20booking."
+              href="https://wa.me/6285128009771?text=Halo%20KRUI.CO%2C%20saya%20ingin%20melakukan%20booking."
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full bg-orange text-white font-display font-600 text-[14px] px-5 py-2.5 transition-colors hover:brightness-95"
